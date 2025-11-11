@@ -14,9 +14,12 @@ public class AdoptionService {
     }
 
     public List<AdoptionRequest> findAll() { return repository.findAll(); }
+
     public AdoptionRequest save(AdoptionRequest req) { return repository.save(req); }
+
     public void delete(Long id) { repository.deleteById(id); }
 
     public List<AdoptionRequest> findByAdopter(Long id) { return repository.findByAdopterId(id); }
+    
     public List<AdoptionRequest> findByOwner(Long id) { return repository.findByOwnerId(id); }
 }

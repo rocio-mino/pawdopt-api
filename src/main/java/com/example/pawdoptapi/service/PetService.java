@@ -14,7 +14,10 @@ public class PetService {
     }
 
     public List<Pet> findAll() { return repository.findAll(); }
+
     public Pet findById(Long id) { return repository.findById(id).orElse(null); }
+
     public Pet save(Pet pet) { return repository.save(pet); }
+    
     public void delete(Long id) { repository.deleteById(id); }
 }
