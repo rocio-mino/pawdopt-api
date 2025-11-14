@@ -48,4 +48,5 @@ public class UserController {
     public User login(@RequestBody User loginData) {
         return service.login(loginData.getEmail(), loginData.getPassword());
     }
+
 }
