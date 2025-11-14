@@ -5,20 +5,16 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "images")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String email;
-    private String password;
+    private String url;
 
-    @OneToOne
-    @JoinColumn(name = "foto_id")
-    private Image fotoPerfil;
+    private String descripcion;
 }

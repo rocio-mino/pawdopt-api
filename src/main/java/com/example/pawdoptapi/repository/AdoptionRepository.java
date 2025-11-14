@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdoptionRepository extends JpaRepository<AdoptionRequest, Long> {
-    List<AdoptionRequest> findByAdopterId(Long adopterId);
-    List<AdoptionRequest> findByOwnerId(Long ownerId);
+    List<AdoptionRequest> findByAdopter_Id(Long id);
+    List<AdoptionRequest> findByOwner_Id(Long id);
 }

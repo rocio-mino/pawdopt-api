@@ -1,16 +1,16 @@
 package com.example.pawdoptapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "pets") 
-@AllArgsConstructor
+@Table(name = "pets")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Pet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +21,16 @@ public class Pet {
     private String raza;
     private String descripcion;
     private String ubicacion;
-    private String fotoUri;
-    private Long ownerId;
+
+    @OneToOne
+    @JoinColumn(name = "foto_principal_id")
+    private Image fotoPrincipal;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    @OneToMany
+    @JoinColumn(name = "pet_id")
+    private List<Image> galeria;
 }

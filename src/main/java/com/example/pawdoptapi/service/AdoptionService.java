@@ -1,7 +1,6 @@
 package com.example.pawdoptapi.service;
 
 import com.example.pawdoptapi.model.AdoptionRequest;
-import com.example.pawdoptapi.model.Pet;
 import com.example.pawdoptapi.repository.AdoptionRepository;
 import com.example.pawdoptapi.repository.PetRepository;
 import org.springframework.stereotype.Service;
@@ -24,11 +23,24 @@ public class AdoptionService {
     }
 
     public List<AdoptionRequest> findByAdopter(Long id) {
-        return repository.findByAdopterId(id);
+        return repository.findByAdopter_Id(id);
     }
 
     public List<AdoptionRequest> findByOwner(Long id) {
-        return repository.findByOwnerId(id);
+        return repository.findByOwner_Id(id);
+    }
+
+    public AdoptionRequest accept(Long id) {
+        AdoptionRequest req = repository.findById(id).orElse(null);
+        if (req == null)
+            return null;
+
+        req.setStatus("Aceptada");
+        repository.save(req);
+
+        petRepository.deleteById(req.getPet().getId());
+
+        return req;
     }
 
     public AdoptionRequest save(AdoptionRequest req) {
@@ -39,22 +51,10 @@ public class AdoptionService {
         repository.deleteById(id);
     }
 
-    public AdoptionRequest accept(Long id) {
-        AdoptionRequest req = repository.findById(id).orElse(null);
-        if (req == null) return null;
-
-        req.setStatus("Aceptada");
-        repository.save(req);
-
-        // eliminar mascota de la lista
-        petRepository.deleteById(req.getPetId());
-
-        return req;
-    }
-
     public AdoptionRequest reject(Long id) {
         AdoptionRequest req = repository.findById(id).orElse(null);
-        if (req == null) return null;
+        if (req == null)
+            return null;
 
         req.setStatus("Rechazada");
         repository.save(req);
