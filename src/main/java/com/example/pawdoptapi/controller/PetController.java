@@ -27,17 +27,6 @@ public class PetController {
         return service.findById(id);
     }
 
-    // OPCION B: /perros y /gatos
-    @GetMapping("/perros")
-    public List<Pet> getPerros() {
-        return service.findByEspecie("Perro");
-    }
-
-    @GetMapping("/gatos")
-    public List<Pet> getGatos() {
-        return service.findByEspecie("Gato");
-    }
-
     @PostMapping
     public Pet create(@RequestBody Pet pet) {
         return service.save(pet);

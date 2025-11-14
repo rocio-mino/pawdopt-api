@@ -43,9 +43,11 @@ public class UserController {
         service.delete(id);
     }
 
-    // LOGIN → ahora con JSON correcto
     @PostMapping("/login")
     public User login(@RequestBody User loginData) {
-        return service.login(loginData.getEmail(), loginData.getPassword());
+        return service.login(
+                loginData.getEmail(),
+                loginData.getPassword()
+        );
     }
 }

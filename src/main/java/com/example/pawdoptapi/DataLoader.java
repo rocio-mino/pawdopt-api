@@ -21,16 +21,13 @@ public class DataLoader implements CommandLineRunner {
     private PetRepository petRepository;
 
     @Autowired
-    private ImageRepository imageRepository;
-
-    @Autowired
     private AdoptionRepository adoptionRepository;
 
     @Override
     public void run(String... args) {
         try {
             System.out.println("Esperando que Hibernate inicialice...");
-            Thread.sleep(9000);
+            Thread.sleep(5000);
 
             if (userRepository.count() > 0) {
                 System.out.println("Base ya tiene datos, DataLoader ignorado.");
@@ -41,24 +38,16 @@ public class DataLoader implements CommandLineRunner {
             Random rnd = new Random();
 
             // ----------------------------
-            // 1) USUARIOS
+            // 1) Usuarios
             // ----------------------------
             List<User> usuarios = new ArrayList<>();
 
             for (int i = 0; i < 5; i++) {
                 User u = new User();
-
                 u.setNombre(faker.name().fullName());
                 u.setEmail(faker.internet().emailAddress());
                 u.setPassword("123456");
-
-                // Crear imagen de perfil
-                Image img = new Image();
-                img.setUrl("https://picsum.photos/300?random=" + rnd.nextInt(9999));
-                img.setDescripcion("Imagen de perfil");
-                imageRepository.save(img);
-
-                u.setFotoPerfil(img);
+                u.setFotoUri("https://picsum.photos/200?random=" + rnd.nextInt(9999));
 
                 usuarios.add(userRepository.save(u));
             }
@@ -66,7 +55,7 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("Usuarios creados: " + usuarios.size());
 
             // ----------------------------
-            // 2) MASCOTAS
+            // 2) Mascotas
             // ----------------------------
             List<Pet> mascotas = new ArrayList<>();
             String[] especies = {"Perro", "Gato"};
@@ -78,18 +67,14 @@ public class DataLoader implements CommandLineRunner {
                 p.setEdad(rnd.nextInt(1, 15));
                 p.setRaza(faker.dog().breed());
                 p.setDescripcion(faker.lorem().sentence());
-                p.setUbicacion(faker.address().cityName());
+                p.setUbicacion(faker.address().city());
 
-                // Imagen principal
-                Image img = new Image();
-                img.setUrl("https://picsum.photos/400?random=" + rnd.nextInt(9999));
-                img.setDescripcion("Foto mascota");
-                imageRepository.save(img);
+                // Foto simple URL (no Image entity)
+                p.setFotoUri("https://picsum.photos/400?random=" + rnd.nextInt(9999));
 
-                p.setFotoPrincipal(img);
-
-                // Dueño random
-                p.setOwner(usuarios.get(rnd.nextInt(usuarios.size())));
+                // Owner: ID simple
+                Long ownerId = usuarios.get(rnd.nextInt(usuarios.size())).getId();
+                p.setOwnerId(ownerId);
 
                 mascotas.add(petRepository.save(p));
             }
@@ -97,27 +82,26 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("Mascotas creadas: " + mascotas.size());
 
             // ----------------------------
-            // 3) SOLICITUDES DE ADOPCIÓN
+            // 3) Solicitudes de adopción
             // ----------------------------
+            String[] estados = {"Pendiente", "Aceptada", "Rechazada"};
+
             for (int i = 0; i < 5; i++) {
                 AdoptionRequest req = new AdoptionRequest();
 
-                User adopter = usuarios.get(rnd.nextInt(usuarios.size()));
                 Pet pet = mascotas.get(rnd.nextInt(mascotas.size()));
-                User owner = pet.getOwner();
+                Long adopterId = usuarios.get(rnd.nextInt(usuarios.size())).getId();
+                Long ownerId = pet.getOwnerId();
 
-                req.setAdopter(adopter);
-                req.setOwner(owner);
-                req.setPet(pet);
-
-                String[] estados = {"Pendiente", "Aceptada", "Rechazada"};
+                req.setPetId(pet.getId());
+                req.setAdopterId(adopterId);
+                req.setOwnerId(ownerId);
                 req.setStatus(estados[rnd.nextInt(estados.length)]);
 
                 adoptionRepository.save(req);
             }
 
             System.out.println("Solicitudes de adopción creadas.");
-
             System.out.println("DataLoader completado con éxito.");
 
         } catch (Exception e) {

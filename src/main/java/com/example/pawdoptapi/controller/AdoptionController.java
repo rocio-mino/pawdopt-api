@@ -22,14 +22,22 @@ public class AdoptionController {
         return service.findAll();
     }
 
+    // NUEVO: solicitudes enviadas por un usuario
     @GetMapping("/adopter/{id}")
     public List<AdoptionRequest> getByAdopter(@PathVariable Long id) {
         return service.findByAdopter(id);
     }
 
+    // NUEVO: solicitudes recibidas por un dueño
     @GetMapping("/owner/{id}")
     public List<AdoptionRequest> getByOwner(@PathVariable Long id) {
         return service.findByOwner(id);
+    }
+
+    // NUEVO: solicitudes relacionadas a una mascota
+    @GetMapping("/pet/{id}")
+    public List<AdoptionRequest> getByPet(@PathVariable Long id) {
+        return service.findByPet(id);
     }
 
     @PostMapping
@@ -43,7 +51,7 @@ public class AdoptionController {
     }
 
     @PatchMapping("/{id}/reject")
-    public AdoptionRequest reject(@PathVariable Long id) {
-        return service.reject(id);
+    public void reject(@PathVariable Long id) {
+        service.reject(id);
     }
 }

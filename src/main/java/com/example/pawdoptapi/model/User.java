@@ -18,7 +18,5 @@ public class User {
     private String email;
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "foto_id")
-    private Image fotoPerfil;
+    private String fotoUri;
 }

@@ -14,17 +14,9 @@ public class AdoptionRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "adopter_id")
-    private User adopter;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
-
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    private Long adopterId;
+    private Long ownerId;
+    private Long petId;
 
     private String status = "Pendiente";
 }

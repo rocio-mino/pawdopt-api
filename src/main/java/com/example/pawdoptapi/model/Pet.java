@@ -2,7 +2,6 @@ package com.example.pawdoptapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -20,17 +19,12 @@ public class Pet {
     private int edad;
     private String raza;
     private String descripcion;
+
+    // URL o content://
+    private String fotoUri;
+
     private String ubicacion;
 
-    @OneToOne
-    @JoinColumn(name = "foto_principal_id")
-    private Image fotoPrincipal;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
-
-    @OneToMany
-    @JoinColumn(name = "pet_id")
-    private List<Image> galeria;
+    // Solo el ID del usuario dueño
+    private Long ownerId;
 }

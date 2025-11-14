@@ -10,58 +10,48 @@ import java.util.List;
 @Service
 public class AdoptionService {
 
-    private final AdoptionRepository repository;
+    private final AdoptionRepository adoptionRepository;
     private final PetRepository petRepository;
 
-    public AdoptionService(AdoptionRepository repository, PetRepository petRepository) {
-        this.repository = repository;
+    public AdoptionService(AdoptionRepository adoptionRepository, PetRepository petRepository) {
+        this.adoptionRepository = adoptionRepository;
         this.petRepository = petRepository;
     }
 
     public List<AdoptionRequest> findAll() {
-        return repository.findAll();
+        return adoptionRepository.findAll();
     }
 
-    public List<AdoptionRequest> findByAdopter(Long id) {
-        return repository.findByAdopter_Id(id);
+    public List<AdoptionRequest> findByAdopter(Long adopterId) {
+        return adoptionRepository.findByAdopterId(adopterId);
     }
 
-    public List<AdoptionRequest> findByOwner(Long id) {
-        return repository.findByOwner_Id(id);
+    public List<AdoptionRequest> findByOwner(Long ownerId) {
+        return adoptionRepository.findByOwnerId(ownerId);
     }
 
-    public AdoptionRequest accept(Long id) {
-        AdoptionRequest req = repository.findById(id).orElse(null);
-        if (req == null)
-            return null;
-
-        req.setStatus("Aceptada");
-        repository.save(req);
-
-        petRepository.deleteById(req.getPet().getId());
-
-        return req;
+    public List<AdoptionRequest> findByPet(Long petId) {
+        return adoptionRepository.findByPetId(petId);
     }
 
     public AdoptionRequest save(AdoptionRequest req) {
-        return repository.save(req);
+        return adoptionRepository.save(req);
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
+    public AdoptionRequest accept(Long id) {
+        AdoptionRequest req = adoptionRepository.findById(id).orElse(null);
+        if (req == null) return null;
 
-    public AdoptionRequest reject(Long id) {
-        AdoptionRequest req = repository.findById(id).orElse(null);
-        if (req == null)
-            return null;
+        req.setStatus("Aceptada");
+        adoptionRepository.save(req);
 
-        req.setStatus("Rechazada");
-        repository.save(req);
-
-        // se elimina la solicitud completamente
-        repository.deleteById(id);
+        // eliminar mascota una vez adoptada
+        petRepository.deleteById(req.getPetId());
 
         return req;
+    }
+
+    public void reject(Long id) {
+        adoptionRepository.deleteById(id);
     }
 }

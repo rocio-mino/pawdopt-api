@@ -23,10 +23,6 @@ public class PetService {
         return repository.findById(id).orElse(null);
     }
 
-    public List<Pet> findByEspecie(String especie) {
-        return repository.findByEspecieIgnoreCase(especie);
-    }
-
     public Pet save(Pet pet) {
         return repository.save(pet);
     }
