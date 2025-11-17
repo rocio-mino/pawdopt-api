@@ -2,9 +2,12 @@ package com.example.pawdoptapi.controller;
 
 import com.example.pawdoptapi.model.User;
 import com.example.pawdoptapi.service.UserService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -49,5 +52,19 @@ public class UserController {
                 loginData.getEmail(),
                 loginData.getPassword()
         );
+    }
+
+    @PatchMapping("/{id}/photo")
+    public ResponseEntity<User> updatePhoto(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body
+    ) {
+        String fotoUri = body.get("fotoUri");
+
+        User user = service.findById(id);
+        user.setFotoUri(fotoUri);
+
+        User updated = service.save(user);
+        return ResponseEntity.ok(updated);
     }
 }
