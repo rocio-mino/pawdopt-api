@@ -30,10 +30,6 @@ public class AdoptionService {
         return adoptionRepository.findByOwnerId(ownerId);
     }
 
-    public List<AdoptionRequest> findByPet(Long petId) {
-        return adoptionRepository.findByPetId(petId);
-    }
-
     public AdoptionRequest save(AdoptionRequest req) {
         return adoptionRepository.save(req);
     }

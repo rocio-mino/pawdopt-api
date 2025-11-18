@@ -2,7 +2,6 @@ package com.example.pawdoptapi.controller;
 
 import com.example.pawdoptapi.model.User;
 import com.example.pawdoptapi.service.UserService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +46,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody User loginData) {
-        return service.login(
-                loginData.getEmail(),
-                loginData.getPassword()
-        );
+    public User login(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+        return service.login(email, password);
     }
 
     @PatchMapping("/{id}/photo")
