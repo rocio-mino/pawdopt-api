@@ -21,7 +21,8 @@ public class Pet {
     private String descripcion;
 
     // URL o content://
-    private String fotoUri;
+    @Column(nullable = true)
+    private String fotoUri = null;
 
     private String ubicacion;
 

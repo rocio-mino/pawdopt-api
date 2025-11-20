@@ -17,5 +17,8 @@ public class User {
     private String nombre;
     private String email;
     private String password;
-    private String fotoUri;
+    
+    @Column(nullable = true)
+    private String fotoUri = null;
+
 }
