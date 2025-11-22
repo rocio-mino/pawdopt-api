@@ -31,6 +31,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
+        user.setId(null);
         return service.save(user);
     }
 
@@ -55,8 +56,7 @@ public class UserController {
     @PatchMapping("/{id}/photo")
     public ResponseEntity<User> updatePhoto(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body
-    ) {
+            @RequestBody Map<String, String> body) {
         String fotoUri = body.get("fotoUri");
 
         User user = service.findById(id);
