@@ -29,6 +29,7 @@ public class PetController {
 
     @PostMapping
     public Pet create(@RequestBody Pet pet) {
+        pet.setId(null);
         return service.save(pet);
     }
 

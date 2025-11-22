@@ -1,5 +1,7 @@
 package com.example.pawdoptapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,8 +10,8 @@ import lombok.*;
 @Table(name = "pets")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,13 +21,7 @@ public class Pet {
     private int edad;
     private String raza;
     private String descripcion;
-
-    // URL o content://
-    @Column(nullable = true)
-    private String fotoUri = null;
-
+    private String fotoUri;
     private String ubicacion;
-
-    // Solo el ID del usuario dueño
     private Long ownerId;
 }
