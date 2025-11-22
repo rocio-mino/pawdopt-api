@@ -1,5 +1,7 @@
 package com.example.pawdoptapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,6 +10,7 @@ import lombok.*;
 @Table(name = "adoptions")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AdoptionRequest {
 
     @Id

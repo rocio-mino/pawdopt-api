@@ -34,6 +34,7 @@ public class AdoptionController {
 
     @PostMapping
     public AdoptionRequest create(@RequestBody AdoptionRequest req) {
+        req.setId(null);
         return service.save(req);
     }
 
